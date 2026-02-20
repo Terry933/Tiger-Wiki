@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>进出口操作指引</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #f4f5f7;
+    --white: #ffffff;
+    --border: #e5e7eb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --accent-tb: #16a34a;
+    --accent-tb-light: #dcfce7;
+    --accent-tl: #7c3aed;
+    --accent-tl-light: #ede9fe;
+    --accent-gw: #ea580c;
+    --accent-gw-light: #ffedd5;
+    --accent-blue: #2563eb;
+    --accent-blue-light: #dbeafe;
+    --warn: #dc2626;
+    --warn-bg: #fef2f2;
+    --step-line: #d1d5db;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans SC','PingFang SC',sans-serif; background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.6; }
+
+  .site-header { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+  .header-inner { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; gap: 12px; height: 56px; }
+  .header-logo { width: 32px; height: 32px; background: linear-gradient(135deg,#1e40af,#7c3aed); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; }
+  .header-title { font-size: 16px; font-weight: 700; }
+  .header-sub { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+
+  .main-wrap { max-width: 1000px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* HOME */
+  .wizard-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px 24px; margin-bottom: 20px; }
+  .wizard-card h2 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .wizard-card .sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; }
+  .wizard-q { font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; font-weight: 500; }
+  .wizard-opts { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .wopt { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--white); font-size: 13px; cursor: pointer; transition: all .15s; font-family: inherit; color: var(--text-primary); }
+  .wopt:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+  .wopt.selected { border-color: var(--accent-blue); background: var(--accent-blue-light); color: var(--accent-blue); font-weight: 600; }
+  .wizard-result { margin-top: 14px; padding: 14px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); display: none; align-items: center; gap: 14px; }
+  .wizard-result.show { display: flex; }
+  .wr-text { flex: 1; }
+  .wr-label { font-size: 12px; color: var(--text-secondary); }
+  .wr-main { font-size: 14px; font-weight: 700; margin: 2px 0; }
+  .wr-btn { padding: 8px 20px; border-radius: 8px; background: var(--accent-blue); color: white; border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .wr-btn:hover { opacity: .88; }
+
+  .section-label { font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; }
+  .pkg-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media(max-width:640px){ .pkg-grid { grid-template-columns: 1fr; } }
+
+  .pkg-card { background: var(--white); border-radius: var(--radius); border: 2px solid var(--border); padding: 20px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden; }
+  .pkg-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .pkg-card.tb { border-top: 4px solid var(--accent-tb); }
+  .pkg-card.tl { border-top: 4px solid var(--accent-tl); }
+  .pkg-card.gw { border-top: 4px solid var(--accent-gw); }
+  .pkg-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 12px; }
+  .pkg-badge.tb { background: var(--accent-tb-light); color: var(--accent-tb); }
+  .pkg-badge.tl { background: var(--accent-tl-light); color: var(--accent-tl); }
+  .pkg-badge.gw { background: var(--accent-gw-light); color: var(--accent-gw); }
+  .pkg-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .pkg-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
+  .pkg-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .pkg-meta-item .ml { font-size: 11px; color: var(--text-muted); }
+  .pkg-meta-item .mv { font-size: 13px; font-weight: 600; }
+  .pkg-arrow { position: absolute; right: 16px; bottom: 16px; width: 28px; height: 28px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text-muted); transition: all .2s; }
+  .pkg-card:hover .pkg-arrow { background: var(--accent-blue); color: white; }
+  .gw-note { font-size: 11px; color: var(--accent-gw); font-weight: 500; margin-top: 4px; }
+
+  /* DETAIL */
+  #view-detail { display: none; }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; font-family: inherit; font-size: 14px; color: var(--text-secondary); cursor: pointer; padding: 0; margin-bottom: 16px; }
+  .back-btn:hover { color: var(--accent-blue); }
+  .detail-header { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px 24px; margin-bottom: 16px; }
+  .detail-header-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .detail-icon { font-size: 28px; }
+  .detail-title { font-size: 20px; font-weight: 700; }
+  .detail-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .detail-meta-row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .detail-meta-chip { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .detail-meta-chip .dm-label { color: var(--text-muted); }
+  .detail-meta-chip .dm-val { font-weight: 700; }
+
+  /* TABS */
+  .tab-row { display: flex; background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); padding: 4px; margin-bottom: 16px; overflow-x: auto; gap: 2px; }
+  .tab-btn { flex: 1; min-width: 90px; padding: 9px 6px; border: none; background: none; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--text-secondary); cursor: pointer; border-radius: 8px; transition: all .15s; white-space: nowrap; }
+  .tab-btn.active { background: var(--accent-blue); color: white; font-weight: 700; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SUB-MODE TOGGLE (FOB/CIF) */
+  .mode-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
+  .mode-btn { flex: 1; padding: 10px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: var(--white); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; text-align: center; }
+  .mode-btn:hover { border-color: var(--accent-tb); }
+  .mode-btn.active { border-color: var(--accent-tb); background: var(--accent-tb-light); color: var(--accent-tb); }
+  .mode-panel { display: none; }
+  .mode-panel.active { display: block; }
+
+  /* STEPS */
+  .steps-wrap { display: flex; flex-direction: column; }
+  .step-item { display: flex; position: relative; }
+  .step-left { display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0; }
+  .step-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: var(--bg); border: 2px solid var(--border); color: var(--text-secondary); flex-shrink: 0; z-index: 1; }
+  .step-item.warn .step-num { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+  .step-line-v { width: 2px; flex: 1; background: var(--step-line); min-height: 20px; margin: 2px 0; }
+  .step-item:last-child .step-line-v { display: none; }
+  .step-body { flex: 1; padding: 0 0 20px 14px; }
+  .step-header { display: flex; align-items: center; gap: 8px; min-height: 32px; margin-bottom: 6px; flex-wrap: wrap; }
+  .step-name { font-size: 14px; font-weight: 700; }
+  .step-who { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--accent-blue-light); color: var(--accent-blue); font-weight: 600; }
+  .step-deadline { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--bg); color: var(--text-secondary); font-weight: 500; margin-left: auto; }
+  .step-item.warn .step-deadline { background: var(--warn-bg); color: var(--warn); font-weight: 700; }
+  .step-content { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+  .step-content p { margin-bottom: 4px; }
+  .step-content strong { color: var(--text-primary); }
+  .step-content .sub-note { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 4px; }
+  .shared-tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 4px; background: #f0fdf4; color: var(--accent-tb); border: 1px solid var(--accent-tb); font-weight: 700; margin-left: 4px; vertical-align: middle; }
+
+  /* RULE BOXES */
+  .rule-box { border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 12px; font-size: 12px; line-height: 1.7; }
+  .rule-box.tl-rule { background: var(--accent-tl-light); border: 1.5px solid var(--accent-tl); color: #4c1d95; }
+  .rule-box.pay-rule { background: #fffbeb; border: 1.5px solid #f59e0b; color: #78350f; }
+  .rule-box.warn-rule { background: var(--warn-bg); border: 1.5px solid var(--warn); color: #7f1d1d; }
+  .rule-box .rule-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+
+  /* PAYMENT FLOW */
+  .payment-flow { background: var(--bg); border-radius: var(--radius-sm); padding: 14px; margin: 10px 0; display: flex; flex-direction: column; gap: 10px; }
+  .flow-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; }
+  .flow-entity { padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 12px; white-space: nowrap; }
+  .flow-entity.tl { background: var(--accent-tl-light); color: var(--accent-tl); }
+  .flow-entity.gw { background: var(--accent-gw-light); color: var(--accent-gw); }
+  .flow-entity.agent { background: #fef3c7; color: #92400e; }
+  .flow-entity.supplier { background: var(--accent-blue-light); color: var(--accent-blue); }
+  .flow-entity.tb { background: var(--accent-tb-light); color: var(--accent-tb); }
+  .flow-arrow { color: var(--text-muted); font-size: 14px; }
+  .flow-label { font-size: 11px; color: var(--text-secondary); background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+  .flow-label.warn { border-color: var(--warn); color: var(--warn); background: var(--warn-bg); font-weight: 600; }
+  .flow-label.info { border-color: var(--accent-blue); color: var(--accent-blue); background: var(--accent-blue-light); }
+  .flow-label.green { border-color: var(--accent-tb); color: var(--accent-tb); background: var(--accent-tb-light); }
+
+  /* MATERIALS */
+  .mat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  @media(max-width:600px){ .mat-grid { grid-template-columns: repeat(2,1fr); } }
+  .mat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; }
+  .mat-card:hover { box-shadow: var(--shadow-md); }
+  .mat-icon { font-size: 28px; margin-bottom: 6px; }
+  .mat-name { font-size: 12px; font-weight: 600; line-height: 1.4; }
+  .mat-by { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+  .mat-card.warn-card { border-color: #fca5a5; background: var(--warn-bg); }
+  .mat-card.warn-card .mat-name { color: var(--warn); }
+
+  /* NOTICES */
+  .notice-list { display: flex; flex-direction: column; gap: 12px; }
+  .notice-item { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; display: flex; gap: 12px; }
+  .notice-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .notice-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .notice-text { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+  .notice-item.danger { border-left: 4px solid var(--warn); }
+  .notice-item.warning { border-left: 4px solid #f59e0b; }
+  .notice-item.info { border-left: 4px solid var(--accent-blue); }
+
+  /* PAYMENT TIMELINE */
+  .pay-timeline { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 16px; }
+  .pay-timeline-header { padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+  .pay-row { display: grid; grid-template-columns: 160px 1fr 1fr; border-bottom: 1px solid var(--border); padding: 10px 16px; gap: 12px; align-items: center; }
+  .pay-row:last-child { border-bottom: none; }
+  .pay-row.warn-row { background: var(--warn-bg); }
+  .pay-type { font-size: 13px; font-weight: 600; }
+  .pay-deadline { font-size: 12px; font-weight: 700; color: var(--warn); }
+  .pay-note { font-size: 12px; color: var(--text-secondary); }
+
+  /* ODOO FLOW */
+  .odoo-flow { display: flex; flex-direction: column; gap: 12px; }
+  .odoo-step { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; }
+  .odoo-step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-blue); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .odoo-step-body { flex: 1; }
+  .odoo-step-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .odoo-step-text { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+  .odoo-step-text strong { color: var(--text-primary); }
+  .odoo-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
+  .odoo-tag.tl { background: var(--accent-tl-light); color: var(--accent-tl); }
+  .odoo-tag.gw { background: var(--accent-gw-light); color: var(--accent-gw); }
+  .odoo-tag.both { background: var(--accent-blue-light); color: var(--accent-blue); }
+  .odoo-connector { width: 2px; height: 12px; background: var(--step-line); margin-left: 13px; }
+  .odoo-doc-box { background: var(--bg); border-radius: var(--radius-sm); padding: 10px 14px; margin-top: 8px; font-size: 12px; color: var(--text-secondary); }
+  .odoo-doc-box strong { color: var(--text-primary); display: block; margin-bottom: 4px; }
+
+  /* ACCOUNTING */
+  .journal-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+  .journal-table th { background: var(--bg); padding: 8px 10px; text-align: left; font-weight: 700; color: var(--text-secondary); border-bottom: 2px solid var(--border); }
+  .journal-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .journal-table tr:last-child td { border-bottom: none; }
+  .journal-table .dr { color: var(--accent-blue); font-weight: 600; }
+  .journal-table .cr { color: var(--accent-tb); font-weight: 600; padding-left: 20px; }
+  .journal-table .amount { font-family: monospace; font-size: 11px; }
+  .journal-section { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 12px; }
+  .journal-section-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .journal-section-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+  .co-tag { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+  .co-tag.tl { background: var(--accent-tl-light); color: var(--accent-tl); }
+  .co-tag.gw { background: var(--accent-gw-light); color: var(--accent-gw); }
+
+  /* DETAIL SECTION */
+  .detail-section { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 14px; }
+  .detail-section h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; }
+
+  #view-home, #view-detail { animation: fadeIn .2s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-logo">📦</div>
+    <div class="header-title">进出口操作指引</div>
+    <div class="header-sub">Import &amp; Export SOP · V3.2</div>
+  </div>
+</header>
+
+<div class="main-wrap">
+
+  <!-- HOME -->
+  <div id="view-home">
+    <div class="wizard-card">
+      <h2>🔍 不知道走哪条流程？</h2>
+      <div class="sub">回答问题，自动帮你定位</div>
+      <div class="wizard-q">这批货最终给谁用？</div>
+      <div class="wizard-opts" id="wq1">
+        <button class="wopt" data-v="tb" onclick="selectW(1,this)">TB（铅酸电池业务）</button>
+        <button class="wopt" data-v="tl" onclick="selectW(1,this)">TL（换电业务）</button>
+        <button class="wopt" data-v="gw" onclick="selectW(1,this)">GW多哈项目</button>
+      </div>
+      <div class="wizard-result" id="wizard-result">
+        <div class="wr-text">
+          <div class="wr-label">推荐操作流程</div>
+          <div class="wr-main" id="wr-main-text"></div>
+        </div>
+        <button class="wr-btn" onclick="goDetail()">查看详情 →</button>
+      </div>
+    </div>
+
+    <div class="section-label">选择操作场景</div>
+    <div class="pkg-grid">
+      <div class="pkg-card tb" onclick="openDetail('tb')">
+        <div class="pkg-badge tb">🟢 TB货物</div>
+        <div class="pkg-name">TB材料进口</div>
+        <div class="pkg-desc">供应商不出口，须通过中介代理。分FOB（我方找货代）和CIF（中介含运）两种模式</div>
+        <div class="pkg-meta">
+          <div class="pkg-meta-item"><div class="ml">出口方</div><div class="mv">中介</div></div>
+          <div class="pkg-meta-item"><div class="ml">进口方</div><div class="mv">TL（代TB）</div></div>
+          <div class="pkg-meta-item"><div class="ml">目的地</div><div class="mv">孟加拉</div></div>
+          <div class="pkg-meta-item"><div class="ml">付款</div><div class="mv">TL TT + GW补差</div></div>
+        </div>
+        <div class="pkg-arrow">→</div>
+      </div>
+      <div class="pkg-card tl" onclick="openDetail('tl')">
+        <div class="pkg-badge tl">🟣 TL货物</div>
+        <div class="pkg-name">TL自身进口</div>
+        <div class="pkg-desc">换电柜、电池及配件，TL持有IRC自行进口，无需内部划转</div>
+        <div class="pkg-meta">
+          <div class="pkg-meta-item"><div class="ml">出口商</div><div class="mv">中国供应商</div></div>
+          <div class="pkg-meta-item"><div class="ml">进口方</div><div class="mv">TL（自有IRC）</div></div>
+          <div class="pkg-meta-item"><div class="ml">目的地</div><div class="mv">孟加拉</div></div>
+          <div class="pkg-meta-item"><div class="ml">付款</div><div class="mv">LC / TT + GW补差</div></div>
+        </div>
+        <div class="pkg-arrow">→</div>
+      </div>
+      <div class="pkg-card gw" onclick="openDetail('gw')">
+        <div class="pkg-badge gw">🟠 GW多哈</div>
+        <div class="pkg-name">GW多哈项目</div>
+        <div class="pkg-desc">新加坡母公司GW名义采购，目的地卡塔尔多哈，独立清关流程</div>
+        <div class="pkg-meta">
+          <div class="pkg-meta-item"><div class="ml">出口商</div><div class="mv">中国供应商</div></div>
+          <div class="pkg-meta-item"><div class="ml">进口方</div><div class="mv">GW（卡塔尔）</div></div>
+          <div class="pkg-meta-item"><div class="ml">目的地</div><div class="mv">卡塔尔·多哈</div></div>
+          <div class="pkg-meta-item"><div class="ml">付款</div><div class="mv">GW直接TT</div></div>
+        </div>
+        <div class="gw-note">⚠️ 清关流程与孟加拉完全不同</div>
+        <div class="pkg-arrow">→</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL -->
+  <div id="view-detail">
+    <button class="back-btn" onclick="goHome()">← 返回选择场景</button>
+    <div class="detail-header" id="detail-header"></div>
+    <div class="tab-row" id="tab-row"></div>
+    <div id="tab-steps" class="tab-panel active"></div>
+    <div id="tab-materials" class="tab-panel"></div>
+    <div id="tab-payment" class="tab-panel"></div>
+    <div id="tab-notices" class="tab-panel"></div>
+  </div>
+
+</div>
+
+<script>
+// ── SHARED STEPS (same for FOB and CIF) ──────────────────────────────
+const TB_SHARED_STEPS_PRE = [
+  { num:'1', name:'确定中介 + 下采购订单', who:'供应链', deadline:'下单前', warn:false,
+    content:`<div class="rule-box tl-rule"><div class="rule-title">🔑 为什么必须走中介？</div>TB材料的3大主要供应商均<strong>不提供出口服务</strong>，出口报关由中介全权负责，无需审核供应商出口资质。</div>
+    <p><strong>确定中介类型：</strong> 确认中介是 <strong>FOB模式</strong>（仅代采购报关，我方自行找货代订船）还是 <strong>CIF模式</strong>（中介自带货代，含运费直接结算）</p>
+    <p><strong>向供应商下PO：</strong> 采购合同买方必须是 <strong>TL</strong>（孟加拉境内唯一IRC持有方）</p>`,
+    shared: true },
+  { num:'2', name:'确认PL → 计算金额 → FOB模式同步询价货代', who:'供应链', deadline:'签合同前', warn:false,
+    content:`<div class="rule-box pay-rule"><div class="rule-title">💡 必须先有PL才能定合同金额</div>TL的TT金额 = <strong>PL重量 × 固定报关单价</strong>，PL是合同金额的计算基础，顺序不可颠倒。</div>
+    <p>向中介索取 <strong>Packing List（PL）</strong>，确认货物重量和品类</p>
+    <p>按重量 × 固定报关单价 → 得出 <strong>TL TT金额（= CN版合同金额）</strong></p>
+    <p>BD版合同金额 = 孟加拉报关实际金额（中介提供）</p>
+    <p>GW补差额 = 总货款 − TL TT金额</p>
+    <p><strong>【FOB模式同步进行】</strong> 拿到PL后即可向货代清单报价，提供货物信息（重量、体积、HS Code、目的港），比较运费和船期，提前锁定货代</p>`,
+    shared: true },
+  { num:'3', name:'签署合同 + FOB模式确定货代订舱', who:'供应链+法务', deadline:'发货前14天', warn:false,
+    content:`<p>① <strong>中介→TL销售合同（CN版）+ 新加坡三方协议：</strong> 金额 = TL TT金额，含GW补差条款，<strong>中介+TL+GW三方盖章</strong></p>
+    <p>② <strong>中介→TL销售合同（BD版）：</strong> 与孟加拉报关金额一致，中介和TL双方签署</p>
+    <p class="sub-note">供应商与中介之间的合同属中介内部事务，我方无需介入</p>
+    <p style="margin-top:8px"><strong>【FOB模式】</strong> 合同签署后，正式委托选定货代，提供SO信息，安排订舱；告知货代提单Shipper须为中介名称</p>`,
+    shared: true },
+  { num:'4', name:'TL TT给中介（第1笔）', who:'TL财务', deadline:'⚠️ 中介付供应商前', warn:true,
+    content:`<div class="rule-box tl-rule"><div class="rule-title">🔑 孟加拉付款规则（单笔订单金额为准）</div><strong>单笔 &lt; USD 10,000</strong>：可使用TT<br><strong>单笔 ≥ USD 10,000</strong>：必须开立LC（装船前10天）</div>
+    <p><strong>TL → 中介：</strong> 按CN版合同金额TT</p>
+    <div class="rule-box pay-rule" style="margin-top:8px"><div class="rule-title">🔄 Odoo操作（TL账套）</div>
+    供应链在TL账套创建 <strong>采购订单（PO）</strong>，供应商=中介，附CN版合同+PL<br>
+    发起 <strong>预付款申请（Vendor Prepayment）</strong>，挂靠PO，提交审批<br>
+    → 审批通过后，TL财务方可执行TT，<strong>无审批单不付款</strong></div>`,
+    shared: true },
+  { num:'5', name:'GW TT补差额给中介（第2笔）', who:'GW财务', deadline:'⚠️ 中介付供应商前', warn:true,
+    content:`<div class="payment-flow"><div class="flow-row"><span class="flow-entity gw">GW（新加坡）</span><span class="flow-arrow">→</span><span class="flow-label warn">TT差额 USD</span><span class="flow-arrow">→</span><span class="flow-entity agent">中介</span></div></div>
+    <p><strong>Glacierwater（新加坡）</strong>直接TT给中介，补足差额</p>
+    <div class="rule-box pay-rule" style="margin-top:8px"><div class="rule-title">🔄 Odoo操作（GW账套）</div>
+    供应链在GW账套发起 <strong>供应商付款申请（Vendor Payment）</strong><br>
+    附件：三方协议 + PL，提交审批<br>
+    → 审批通过后，GW财务方可执行TT，<strong>无审批单不付款</strong></div>`,
+    shared: true },
+  { num:'6', name:'中介收齐两笔款 → 付供应商 → 供应商放货', who:'中介', deadline:'两笔到账后', warn:false,
+    content:`<div class="rule-box pay-rule"><div class="rule-title">💡 中介的付款逻辑</div>中介须<strong>同时收到TL第1笔 + GW第2笔</strong>，才会向供应商付款。任何一笔未到账，中介不会付款，供应商不会放货。</div>
+    <div class="payment-flow"><div class="flow-row"><span class="flow-entity tl">TL</span><span class="flow-arrow">→</span><span class="flow-label info">第1笔 TT</span><span class="flow-arrow">→</span><span class="flow-entity agent">中介</span><span class="flow-arrow">→</span><span class="flow-label green">两笔齐后付供应商</span><span class="flow-arrow">→</span><span class="flow-entity supplier">供应商放货</span></div><div class="flow-row"><span class="flow-entity gw">GW</span><span class="flow-arrow">→</span><span class="flow-label warn">第2笔 TT</span><span class="flow-arrow">→</span><span class="flow-entity agent">中介</span></div></div>`,
+    shared: true },
+];
+
+const TB_SHARED_STEPS_DOCS = [
+  { num:'X', name:'供应链核查并准备清关单据', who:'供应链', deadline:'装船前确认齐全', warn:false,
+    content:`<div class="rule-box tl-rule"><div class="rule-title">🔑 清关单据清单（6项，缺一不可）</div></div>
+    <p>向中介逐项确认以下单据已备齐：</p>
+    <p>① <strong>清关发票（Custom Invoice）</strong> — 电子版，金额须与TL TT金额一致</p>
+    <p>② <strong>装箱单（PL）</strong> — 电子版</p>
+    <p>③ <strong>DPL（Detailed Packing List）</strong> — 电子版</p>
+    <p>④ <strong>合同（BD版）</strong> — 电子版</p>
+    <p>⑤ <strong>原产地证（CO）</strong> — <span style="color:var(--warn);font-weight:700">必须正本原件</span></p>
+    <p>⑥ <strong>提单（B/L）</strong> — <span style="color:var(--warn);font-weight:700">必须正本原件</span></p>
+    <p class="sub-note">⚠️ CO和B/L正本须实物送达孟加拉TL，开船后立即安排（见下一步）</p>`,
+    shared: true },
+];
+
+const TB_SHARED_STEPS_POST = [
+  { num:'Y1', name:'支付运费 → 换取提单正本', who:'供应链+财务', deadline:'⚠️ 开船后，付款方得单证', warn:true,
+    content:`<div class="rule-box warn-rule"><div class="rule-title">⚠️ 运费不付，货代不释放提单正本</div>提单正本是清关必要文件，货代/中介在收到运费后才会出具，不可跳过。</div>
+    <p><strong>FOB模式：</strong> 向我方货代支付运费（通常开船后付款）；付款完成后向货代索取<strong>提单正本</strong></p>
+    <p><strong>CIF模式：</strong> 运费已含在中介CIF总价内；确认中介已收到第1+第2笔款项后，向中介索取<strong>提单正本</strong></p>
+    <p class="sub-note">提单正本到手后，方可安排邮寄或随行送达孟加拉清关公司</p>`,
+    shared: true },
+  { num:'Y2', name:'CO + 提单正本送达孟加拉清关公司', who:'供应链', deadline:'⚠️ 到港前送达', warn:true,
+    content:`<div class="rule-box warn-rule"><div class="rule-title">⚠️ CO和提单均须正本原件，实物送达清关公司</div>两份正本不到，货物无法清关。</div>
+    <p><strong>方式一（快递）：</strong> 指定快递寄送至孟加拉<strong>清关公司</strong>指定收件人，提前确认地址及联系方式</p>
+    <p><strong>方式二（随行）：</strong> 如有同事近期赴孟加拉出差，可安排随身携带直接交给清关公司</p>`,
+    shared: true },
+  { num:'Z', name:'将全套清关单据交给孟加拉清关公司', who:'供应链', deadline:'到港前', warn:false,
+    content:`<p>将以下6项单据整理齐全，交给孟加拉清关公司办理进口清关：</p>
+    <p>① 清关发票（电子版，金额与TL TT一致）</p>
+    <p>② PL — 电子版</p>
+    <p>③ DPL — 电子版</p>
+    <p>④ 合同BD版 — 电子版</p>
+    <p>⑤ <strong>CO正本</strong>（实物已送达）</p>
+    <p>⑥ <strong>B/L正本</strong>（实物已送达）</p>
+    <p style="margin-top:8px">清关完成后，货物内部调拨给TB使用</p>`,
+    shared: true },
+];
+
+// ── FOB SPECIFIC STEPS ─────────────────────────────────────────────
+const TB_FOB_STEPS = [
+  { num:'A', name:'询价货代 → 确定货代', who:'供应链', deadline:'付款后尽快', warn:false,
+    content:`<p><strong>FOB模式：中介只负责中国境内出口报关，运输由我方安排</strong></p>
+    <p>向货代清单上若干家询价，比较运费、船期、服务，选取最优方案</p>
+    <p>与选定货代签订货运委托协议，告知货物信息（重量、体积、HS Code、目的港）</p>
+    <p class="sub-note">提单Shipper须为中介名称，提前告知货代</p>` },
+  { num:'B', name:'货代订舱 + 中介配合装箱', who:'货代+中介', deadline:'按船期', warn:false,
+    content:`<p>货代订舱，获取SO（Shipping Order）</p>
+    <p>中介按SO安排货物至指定堆场/港口装箱，配合货代完成装船</p>` },
+];
+
+// ── CIF SPECIFIC STEPS ─────────────────────────────────────────────
+const TB_CIF_STEPS = [
+  { num:'A', name:'确认中介运费报价', who:'供应链', deadline:'签合同前', warn:false,
+    content:`<p><strong>CIF模式：中介自带货代，运费已包含在CIF总价中</strong></p>
+    <p>确认中介提供的CIF报价，运费已含在合同总金额内，我方无需另找货代</p>
+    <p>确认目的港（孟加拉指定港口）、交货条件、保险是否包含</p>` },
+];
+
+// ── TB DATA ────────────────────────────────────────────────────────
+const PKG = {
+  tb: {
+    color:'tb', icon:'🟢',
+    title:'TB材料进口（TL代理 · 中介出口）',
+    subtitle:'供应商不出口 → 中介为中国出口方 → TL凭IRC进口孟加拉 → 内部调拨给TB（方案D：TL向TB收服务费）',
+    meta:[
+      {label:'合同买方',val:'TL（唯一IRC持有方）'},
+      {label:'出口方',val:'中介'},
+      {label:'目的地',val:'孟加拉'},
+      {label:'付款',val:'TL TT + GW（新加坡）补差'},
+    ],
+    hasModes: true,
+    notices:[
+      {type:'danger',icon:'🚨',title:'CO + 提单正本须实物邮寄',
+        text:'孟加拉清关要求CO和提单均为正本原件，不接受电子版。开船后立即安排快递或出差同事携带至孟加拉TL，单据未到无法清关。'},
+      {type:'danger',icon:'⚠️',title:'所有单据出口方必须统一为中介名称',
+        text:'提单Shipper、CO出口方、发票Shipper均须填写中介名称，且须与收款人一致。任何抬头不一致将导致清关被驳回。'},
+      {type:'danger',icon:'💰',title:'$10,000门槛：TT vs LC',
+        text:'单笔订单＜USD 10,000可TT；≥USD 10,000必须开LC（不可撤销即期信用证，装船前10天开立）。'},
+      {type:'danger',icon:'⏰',title:'两笔款须在中介付供应商前全部到位',
+        text:'TL TT和GW TT必须全部到达中介，中介才付供应商，供应商才放货。任何一笔延误将阻塞整个流程。'},
+      {type:'warning',icon:'🌍',title:'CO的HS Code须按孟加拉要求',
+        text:'孟加拉HS Code与中国可能不同，CO和清关发票须使用孟加拉对应HS Code，提前与孟加拉TL团队确认。'},
+      {type:'warning',icon:'📑',title:'两份合同缺一不可',
+        text:'CN版合同（含三方协议）和BD版合同必须在发货前签署盖章，无合同不付款。'},
+      {type:'warning',icon:'⚖️',title:'IRC合规风险（方案D）',
+        text:'TL的IRC类型为Manufacturing & Assembling of Battery，原则上不可转卖原材料给TB。当前采用方案D（TL向TB收取进口代理服务费），资产所有权不发生转移。此方案存在被孟加拉税务机关穿透认定的风险，建议尽快咨询当地税务律师出具合规意见。'},
+      {type:'info',icon:'📦',title:'退税由中介自行处理，我方无需介入',
+        text:'出口退税属中介内部事务，我方只需确保合同、付款凭证齐备。'},
+      {type:'info',icon:'🚢',title:'FOB vs CIF模式选择',
+        text:'FOB：中介只负责中国境内报关，我方需向货代清单询价后订船，成本可能更优但操作更复杂。CIF：中介含运费，我方直接按CIF价结算，操作简便，适合运费差异不大的情况。'},
+    ],
+    materials:[
+      {icon:'📄',name:'中介→TL销售合同-CN版（含三方协议）',by:'供应链/法务',warn:false},
+      {icon:'📄',name:'中介→TL销售合同-BD版',by:'供应链/法务',warn:false},
+      {icon:'📦',name:'装箱单 PL（Shipper=中介）',by:'中介',warn:false},
+      {icon:'🧾',name:'Commercial Invoice-CN版（Shipper=中介）',by:'中介',warn:false},
+      {icon:'🧾',name:'Commercial Invoice-BD版（Shipper=中介）',by:'中介',warn:false},
+      {icon:'🌍',name:'原产地证书 CO 正本（中介名义，孟加拉HS Code）',by:'中介-贸促会',warn:true},
+      {icon:'🚢',name:'提单B/L 正本（Shipper=中介）',by:'货代',warn:true},
+      {icon:'🏦',name:'TL TT付款凭证（第1笔）',by:'TL财务',warn:false},
+      {icon:'🏦',name:'GW TT付款凭证（第2笔）',by:'GW财务',warn:false},
+    ],
+    payment:[
+      {type:'TL → 中介 TT（第1笔）',deadline:'中介付供应商前',note:'按PL重量×固定单价；<$10K可TT，≥$10K须开LC（装船前10天）',warn:true},
+      {type:'GW → 中介 TT（第2笔）',deadline:'中介付供应商前',note:'Glacierwater（新加坡）补差额，USD，凭三方协议',warn:true},
+      {type:'中介 → 供应商',deadline:'两笔到账后',note:'中介收齐后付供应商全款，供应商放货',warn:false},
+      {type:'孟加拉LC（≥$10K时）',deadline:'装船前10天',note:'TL向孟加拉银行开立不可撤销即期LC，受益人=中介',warn:true},
+    ],
+  },
+
+  tl: {
+    color:'tl', icon:'🟣',
+    title:'TL自身货物进口',
+    subtitle:'换电柜、电池及配件，TL持有IRC，以自身名义进口，无需内部划转',
+    meta:[
+      {label:'合同买方',val:'TL（自有IRC）'},
+      {label:'出口方',val:'中国供应商'},
+      {label:'目的地',val:'孟加拉'},
+      {label:'内部划转',val:'不需要'},
+    ],
+    hasModes: false,
+    steps:[
+      {num:'1',name:'确认供应商资质 + 下PO',who:'供应链',deadline:'下单时',warn:false,
+        content:`<div class="rule-box tl-rule"><div class="rule-title">🔑 TL是唯一IRC持有方</div>孟加拉境内所有进口，买方合同主体必须是TL。</div>
+        <p>以TL名义向供应商发PO；确认供应商资质（一般纳税人 ✓ 退税备案 ✓ 海关注册 ✓）</p>`},
+      {num:'2',name:'确认PL → 同步询价货代',who:'供应链',deadline:'签合同前',warn:false,
+        content:`<p>向供应商索取 <strong>Packing List（PL）</strong>，确认货物重量、体积、品类</p>
+        <p>拿到PL后即可同步向货代清单询价，提供货物信息（重量、体积、HS Code、目的港），比较运费和船期，提前锁定货代</p>
+        <p class="sub-note">提单Shipper须为供应商名称，提前告知货代</p>`},
+      {num:'3',name:'签署合同 + 确定货代订舱',who:'供应链+法务',deadline:'发货前14天',warn:false,
+        content:`<p>① <strong>销售合同-CN版</strong>（供应商→TL）：USD，用于收汇/退税</p>
+        <p>② <strong>销售合同-BD版</strong>（供应商→TL）：与孟加拉报关金额一致</p>
+        <p>③ <strong>三方协议</strong>：如有GW补差额，三方均需盖章</p>
+        <p style="margin-top:8px">合同签署后，正式委托选定货代，安排订舱（SO），供应商按SO备货装箱</p>`},
+      {num:'4',name:'TL开立LC（或TT）付供应商',who:'TL财务',deadline:'⚠️ 装船前',warn:true,
+        content:`<div class="rule-box tl-rule"><div class="rule-title">🔑 孟加拉付款规则（单笔订单金额为准）</div><strong>单笔 &lt; USD 10,000</strong>：TT（装船前5天）<br><strong>单笔 ≥ USD 10,000</strong>：开LC（装船前10天）</div>
+        <div class="rule-box pay-rule" style="margin-top:8px"><div class="rule-title">🔄 Odoo操作（TL账套）</div>
+        供应链在TL账套创建 <strong>采购订单（PO）</strong>，附CN版合同+PL<br>
+        发起 <strong>预付款申请</strong>，提交审批 → 审批通过后财务方可执行，<strong>无审批单不付款</strong></div>`},
+      {num:'5',name:'GW补差额TT（如适用）',who:'GW财务',deadline:'⚠️ 付供应商前3天',warn:true,
+        content:`<p>GW（新加坡）直接TT给供应商补差额</p>
+        <div class="rule-box pay-rule" style="margin-top:8px"><div class="rule-title">🔄 Odoo操作（GW账套）</div>
+        供应链在GW账套发起 <strong>供应商付款申请</strong>，附三方协议，提交审批 → 审批通过后执行，<strong>无审批单不付款</strong></div>`},
+      {num:'6',name:'供应商出口报关 + 装船',who:'供应商+货代',deadline:'装船日',warn:false,
+        content:`<p>供应商完成出口报关，货代完成装船</p>
+        <p>B/L Shipper = 供应商，Consignee = TL</p>
+        <p><span style="color:var(--warn);font-weight:700">⚠️ 孟加拉必须提单正本，不接受电放，提前告知货代</span></p>`},
+      {num:'7',name:'支付运费 → 换取提单正本',who:'供应链+财务',deadline:'⚠️ 开船后，付款方得单证',warn:true,
+        content:`<div class="rule-box warn-rule"><div class="rule-title">⚠️ 运费不付，货代不释放提单正本</div></div>
+        <p>向货代支付运费（通常开船后付款），付款完成后向货代索取<strong>提单正本</strong></p>
+        <p class="sub-note">提单正本到手后，方可安排送达孟加拉清关公司</p>`},
+      {num:'8',name:'CO + 提单正本送达孟加拉清关公司',who:'供应链',deadline:'⚠️ 到港前送达',warn:true,
+        content:`<div class="rule-box warn-rule"><div class="rule-title">⚠️ CO和提单均须正本原件，实物送达清关公司</div></div>
+        <p><strong>方式一（快递）：</strong> 指定快递寄送至孟加拉清关公司指定收件人，提前确认地址</p>
+        <p><strong>方式二（随行）：</strong> 如有同事近期赴孟加拉出差，可安排随身携带</p>`},
+      {num:'9',name:'将全套清关单据交给孟加拉清关公司',who:'供应链',deadline:'到港前',warn:false,
+        content:`<p>将以下单据整理齐全，交给孟加拉清关公司办理进口清关：</p>
+        <p>① 清关发票（电子版）　② PL（电子版）　③ DPL（电子版）　④ 合同BD版（电子版）</p>
+        <p>⑤ <strong>CO正本</strong>（实物已送达）　⑥ <strong>B/L正本</strong>（实物已送达）</p>
+        <p style="margin-top:8px">清关完成后，货物归TL自用</p>`},
+      {num:'10',name:'供应商申报出口退税',who:'供应商',deadline:'完成报关后',warn:false,
+        content:`<p>退税材料由供应商自行准备，向税务局申报，与我方无关</p>`},
+    ],
+    notices:[
+      {type:'danger',icon:'🚨',title:'提单必须正本，不接受电放',
+        text:'孟加拉清关必须B/L正本原件，提前告知货代。运费付清后货代方会释放正本，需提前安排送达清关公司。'},
+      {type:'danger',icon:'💰',title:'$10,000门槛：TT vs LC',
+        text:'单笔＜USD 10,000可TT（装船前5天）；≥USD 10,000必须开LC（装船前10天），请财务提前安排。'},
+      {type:'warning',icon:'🚢',title:'FOB模式：货代须尽早确定',
+        text:'拿到PL后即可向货代清单询价，不要等合同签完再找货代，否则容易误船期。提单Shipper须为供应商名称，须提前告知货代。'},
+      {type:'warning',icon:'📑',title:'与TB流程的核心区别',
+        text:'TL自身货物供应商直接出口，无需中介。货物清关后直接归TL自用，无需内部调拨，账务更简单。'},
+      {type:'info',icon:'📦',title:'HS Code分开列示',text:'不同HS Code货物在PL和CI上必须分行，不得合并。'},
+    ],
+    materials:[
+      {icon:'📄',name:'销售合同-CN版',by:'供应链/法务',warn:false},
+      {icon:'📄',name:'销售合同-BD版',by:'供应链/法务',warn:false},
+      {icon:'🤝',name:'三方协议（如有GW付款）',by:'法务',warn:false},
+      {icon:'📦',name:'装箱单 Packing List',by:'供应商',warn:false},
+      {icon:'🧾',name:'Commercial Invoice-CN版',by:'供应商',warn:false},
+      {icon:'🧾',name:'Commercial Invoice-BD版',by:'供应商',warn:false},
+      {icon:'🌍',name:'原产地证书 CO 正本',by:'供应商-贸促会',warn:true},
+      {icon:'🚢',name:'提单B/L 正本（Shipper=供应商）',by:'货代',warn:true},
+      {icon:'📋',name:'出口货物报关单',by:'报关行',warn:false},
+      {icon:'🏦',name:'TL付款凭证',by:'TL财务',warn:false},
+    ],
+    payment:[
+      {type:'TL → 供应商（TT或LC）',deadline:'装船前（TT前5天/LC前10天）',note:'单笔<$10K可TT；≥$10K须开LC，凭Odoo审批单执行',warn:true},
+      {type:'GW → 供应商（差额，如适用）',deadline:'付供应商前3天',note:'GW补差额，凭三方协议+Odoo审批单',warn:true},
+      {type:'我方 → 货代（运费）',deadline:'开船后，付款方得提单正本',note:'FOB模式，付清运费后货代释放提单正本',warn:true},
+    ],
+  },
+
+  gw: {
+    color:'gw', icon:'🟠',
+    title:'GW多哈项目采购',
+    subtitle:'新加坡母公司GW名义采购，目的地卡塔尔多哈，清关流程与孟加拉完全不同',
+    meta:[
+      {label:'合同主体',val:'供应商 → GW'},
+      {label:'目的地',val:'卡塔尔·多哈'},
+      {label:'付款方',val:'GW直接TT'},
+      {label:'清关方',val:'卡塔尔本地代理'},
+    ],
+    hasModes: false,
+    steps:[
+      {num:'1',name:'确认卡塔尔本地清关代理 + 下PO',who:'供应链+GW',deadline:'下单前',warn:false,
+        content:`<p>操作前必须先联系卡塔尔本地清关代理，确认最新进口要求。以<strong>GW名义</strong>向供应商发PO</p>`},
+      {num:'2',name:'签署销售合同（GW版）',who:'法务+供应链',deadline:'发货前14天',warn:false,
+        content:`<p>供应商→GW签《销售合同》，确认卡塔尔进口合规要求（SASO/GSO认证、化验报告等）</p>`},
+      {num:'3',name:'GW TT预付款给供应商',who:'GW财务',deadline:'⚠️ 装船前5-7天',warn:true,
+        content:`<p>GW根据合同，凭<strong>Odoo付款申请单</strong>直接TT给供应商，无单不付</p>`},
+      {num:'4',name:'供应商制作出口单据（GW版）',who:'供应商',deadline:'装船前',warn:false,
+        content:`<p>CI（供应商→GW）、PL、CO（视卡塔尔要求）、SASO认证/化验报告（如需）</p>`},
+      {num:'5',name:'出口报关 + 取得提单',who:'供应商+货代',deadline:'装船日',warn:false,
+        content:`<p>出口商=供应商，提前确认卡塔尔是否接受电放</p>`},
+      {num:'6',name:'卡塔尔本地清关',who:'本地代理',deadline:'到港前',warn:false,
+        content:`<p>卡塔尔本地代理持GW名义单据办理进口，以本地代理最新说明为准</p>`},
+    ],
+    notices:[
+      {type:'danger',icon:'🌍',title:'卡塔尔≠孟加拉，流程完全不同',
+        text:'每次操作前必须与卡塔尔本地代理确认最新要求，不可套用孟加拉流程。'},
+      {type:'danger',icon:'🏷️',title:'提前确认认证要求',
+        text:'卡塔尔可能要求SASO或GSO认证，周期较长，需提前安排。'},
+      {type:'warning',icon:'🚢',title:'提前确认是否接受电放',
+        text:'需与本地代理和货代确认提单是否接受电放。'},
+      {type:'info',icon:'💰',title:'GW直接付款，无需三方协议',
+        text:'多哈项目GW是直接采购方，资金路径更直接。'},
+    ],
+    materials:[
+      {icon:'📄',name:'销售合同（供应商→GW）',by:'法务/供应链',warn:false},
+      {icon:'📦',name:'装箱单 Packing List',by:'供应商',warn:false},
+      {icon:'🧾',name:'Commercial Invoice（GW版）',by:'供应商',warn:false},
+      {icon:'🌍',name:'原产地证书（CO）',by:'供应商',warn:false},
+      {icon:'🚢',name:'提单 B/L',by:'货代',warn:false},
+      {icon:'🏷️',name:'SASO/GSO认证（如需）',by:'供应商/认证机构',warn:true},
+      {icon:'🔬',name:'化验报告（如需）',by:'第三方机构',warn:false},
+      {icon:'🏦',name:'GW TT付款凭证',by:'GW财务',warn:false},
+    ],
+    payment:[
+      {type:'GW TT预付款',deadline:'装船前5-7天',note:'GW直接TT给供应商，按合同约定',warn:true},
+      {type:'GW TT尾款',deadline:'按合同付款条款',note:'凭单据议付',warn:false},
+    ],
+  },
+};
+
+// ── STATE ────────────────────────────────────────────────────────────
+let wizState = {q1:null, target:null};
+let currentPkg = null;
+
+function selectW(q, el) {
+  document.getElementById('wq1').querySelectorAll('.wopt').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  wizState.q1 = el.dataset.v;
+  wizState.target = el.dataset.v;
+  const labels = {tb:'→ TB材料进口（中介出口 · FOB/CIF两种模式）', tl:'→ TL自身货物进口', gw:'→ GW多哈项目流程'};
+  const colors = {tb:'#16a34a', tl:'#7c3aed', gw:'#ea580c'};
+  const bgs = {tb:'#f0fdf4', tl:'#f5f3ff', gw:'#fff7ed'};
+  const r = document.getElementById('wizard-result');
+  document.getElementById('wr-main-text').textContent = labels[el.dataset.v];
+  r.style.borderColor = colors[el.dataset.v];
+  r.style.background = bgs[el.dataset.v];
+  r.classList.add('show');
+}
+
+function goDetail() { openDetail(wizState.target); }
+
+function openDetail(key) {
+  currentPkg = key;
+  const pkg = PKG[key];
+  document.getElementById('view-home').style.display = 'none';
+  const vd = document.getElementById('view-detail');
+  vd.style.display = 'block';
+
+  const ac = key==='tb'?'#16a34a':key==='tl'?'#7c3aed':'#ea580c';
+  document.getElementById('detail-header').innerHTML = `
+    <div class="detail-header-top">
+      <div class="detail-icon">${pkg.icon}</div>
+      <div><div class="detail-title" style="color:${ac}">${pkg.title}</div><div class="detail-subtitle">${pkg.subtitle}</div></div>
+    </div>
+    <div class="detail-meta-row">${pkg.meta.map(m=>`<div class="detail-meta-chip"><span class="dm-label">${m.label}</span><span class="dm-val">${m.val}</span></div>`).join('')}</div>`;
+
+  // Build tab row
+  const tabs = [
+    {id:'steps', label:'📋 操作步骤'},
+    {id:'materials', label:'📎 所需材料'},
+    {id:'payment', label:'💰 付款时间轴'},
+    {id:'notices', label:'⚠️ 注意事项'},
+  ];
+  document.getElementById('tab-row').innerHTML = tabs.map((t,i)=>`<button class="tab-btn${i===0?' active':''}" onclick="switchTab('${t.id}',this)">${t.label}</button>`).join('');
+
+  // Steps
+  if(key==='tb') {
+    const renderSteps = (steps, startNum) => steps.map((s,i) => `
+      <div class="step-item ${s.warn?'warn':''}">
+        <div class="step-left"><div class="step-num">${startNum+i}</div><div class="step-line-v"></div></div>
+        <div class="step-body">
+          <div class="step-header"><span class="step-name">${s.name}</span>${s.shared?'<span class="shared-tag">共用</span>':''}<span class="step-who">${s.who}</span><span class="step-deadline">${s.deadline}</span></div>
+          <div class="step-content">${s.content}</div>
+        </div>
+      </div>`).join('');
+
+    const fobSteps = [...TB_SHARED_STEPS_PRE, TB_FOB_STEPS[0], TB_FOB_STEPS[1], ...TB_SHARED_STEPS_DOCS, ...TB_SHARED_STEPS_POST];
+    const cifSteps = [...TB_SHARED_STEPS_PRE, TB_CIF_STEPS[0], ...TB_SHARED_STEPS_DOCS, ...TB_SHARED_STEPS_POST];
+
+    const renderNumbered = (steps) => steps.map((s,i) => `
+      <div class="step-item ${s.warn?'warn':''}">
+        <div class="step-left"><div class="step-num">${i+1}</div><div class="step-line-v"></div></div>
+        <div class="step-body">
+          <div class="step-header"><span class="step-name">${s.name}</span>${s.shared?'<span class="shared-tag">共用</span>':''}<span class="step-who">${s.who}</span><span class="step-deadline">${s.deadline}</span></div>
+          <div class="step-content">${s.content}</div>
+        </div>
+      </div>`).join('');
+
+    document.getElementById('tab-steps').innerHTML = `
+      <div class="detail-section">
+        <h3>📋 操作步骤 — 请先选择中介模式</h3>
+        <div class="mode-toggle">
+          <button class="mode-btn active" onclick="switchMode('fob',this)">🚢 FOB模式<br><small style="font-weight:400;font-size:11px">中介仅代采购报关<br>我方自行找货代订船</small></button>
+          <button class="mode-btn" onclick="switchMode('cif',this)">📦 CIF模式<br><small style="font-weight:400;font-size:11px">中介自带货代含运费<br>直接按CIF价结算</small></button>
+        </div>
+        <div id="mode-fob" class="mode-panel active"><div class="steps-wrap">${renderNumbered(fobSteps)}</div></div>
+        <div id="mode-cif" class="mode-panel"><div class="steps-wrap">${renderNumbered(cifSteps)}</div></div>
+      </div>`;
+  } else {
+    document.getElementById('tab-steps').innerHTML = `
+      <div class="detail-section"><h3>📋 操作步骤</h3><div class="steps-wrap">${pkg.steps.map((s,i)=>`
+        <div class="step-item ${s.warn?'warn':''}">
+          <div class="step-left"><div class="step-num">${i+1}</div><div class="step-line-v"></div></div>
+          <div class="step-body">
+            <div class="step-header"><span class="step-name">${s.name}</span><span class="step-who">${s.who}</span><span class="step-deadline">${s.deadline}</span></div>
+            <div class="step-content">${s.content}</div>
+          </div>
+        </div>`).join('')}</div></div>`;
+  }
+
+  // Materials
+  document.getElementById('tab-materials').innerHTML = `
+    <div class="detail-section"><h3>📎 所需材料（全套）</h3>
+    <div class="mat-grid">${pkg.materials.map(m=>`
+      <div class="mat-card ${m.warn?'warn-card':''}"><div class="mat-icon">${m.icon}</div><div class="mat-name">${m.name}</div><div class="mat-by">由：${m.by}</div></div>`).join('')}
+    </div></div>`;
+
+  // Payment
+  document.getElementById('tab-payment').innerHTML = `
+    <div class="detail-section"><h3>💰 付款时间轴</h3>
+    <div class="rule-box warn-rule" style="margin-bottom:12px"><div class="rule-title">⚠️ 红色项为硬性截止时间</div>逾期将直接导致装船延误或供应商拒发货</div>
+    <div class="pay-timeline"><div class="pay-timeline-header">付款类型 / 截止时间 / 说明</div>
+    ${pkg.payment.map(p=>`<div class="pay-row ${p.warn?'warn-row':''}"><div class="pay-type">${p.type}</div><div class="pay-deadline">${p.deadline}</div><div class="pay-note">${p.note}</div></div>`).join('')}
+    </div></div>`;
+
+  // Notices
+  document.getElementById('tab-notices').innerHTML = `
+    <div class="detail-section"><h3>⚠️ 注意事项</h3>
+    <div class="notice-list">${pkg.notices.map(n=>`
+      <div class="notice-item ${n.type}"><div class="notice-icon">${n.icon}</div><div class="notice-body"><div class="notice-title">${n.title}</div><div class="notice-text">${n.text}</div></div></div>`).join('')}
+    </div></div>`;
+
+  switchTabSilent('steps');
+  vd.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function switchMode(mode, btn) {
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.mode-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('mode-'+mode).classList.add('active');
+}
+
+function goHome() {
+  document.getElementById('view-detail').style.display='none';
+  document.getElementById('view-home').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+function switchTabSilent(name) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  const first = document.querySelector('.tab-btn');
+  if(first) first.classList.add('active');
+  const panel = document.getElementById('tab-'+name);
+  if(panel) panel.classList.add('active');
+}
+</script>
+</body>
+</html>
